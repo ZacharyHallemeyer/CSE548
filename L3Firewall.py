@@ -167,7 +167,7 @@ class Firewall (EventMixin):
 		uniqueHosts = set((mac, ip) for _, mac, ip in history)
 
 		if len(uniqueHosts) > self.maxHosts:
-			log.debug("Possible DoS attack on port %s.", port)
+			log.warning("Possible DoS attack on port %s.", port)
 			self.blockedPorts.add(port)
 			self.portBlockTimes[port] = currentTime
 			self.installPortDropRule(event, port)
@@ -193,9 +193,9 @@ class Firewall (EventMixin):
 		msg.match.in_port = port
 		msg.priority = 65535
 		msg.idle_timeout = 0
-		msg.hard_timeout = 0
+		msg.hard_timeout = self.blockDuration
 		event.connection.send(msg)
-		log.warning("Installed drop rule for port %s", port)
+		log.info("Installed drop rule for port %s", port)
 
 	def replyToIP(self, packet, match, event, fwconfig):
 		srcmac = str(match.dl_src)
