@@ -18,13 +18,11 @@ file_extension = '.csv'  # .csv or .txt
 num_attack_class = 4 # total number of attack classes
 
 #All attacks in NSL-KDD classed based on their attack classes: DoS, Prob, U2R, and R2L
-attacks_subClass = [
-    ['apache2','back','land','neptune','mailbomb','pod','processtable','smurf','teardrop','udpstorm','worm'],
-    ['ipsweep','mscan','nmap','portsweep','saint','satan'],
-    ['buffer_overflow','loadmodule','perl','ps','rootkit','sqlattack','xterm'],
-    ['ftp_write','guess_passwd','httptunnel','imap','multihop','named','phf','sendmail',
-     'snmpgetattack','snmpguess','spy','warezclient','warezmaster','xlock','xsnoop']
-]
+attacks_subClass = [['apache2', 'back', 'land', 'neptune', 'mailbomb', 'pod', 'processtable', 'smurf', 'teardrop', 'udpstorm', 'worm'], 
+     ['ipsweep', 'mscan', 'portsweep', 'saint', 'satan','nmap'],
+     ['buffer_overflow', 'loadmodule', 'perl', 'ps', 'rootkit', 'sqlattack', 'xterm'],
+     ['ftp_write', 'guess_passwd', 'httptunnel', 'imap', 'multihop', 'named', 'phf', 'sendmail', 'snmpgetattack', 'spy', 'snmpguess', 'warezclient', 'warezmaster', 'xlock', 'xsnoop']
+     ]
 
 # Set1 is selected attack classes
 training_attack_class_list = []
@@ -47,13 +45,13 @@ print("Creating training set.....\n")
 setA_train = []
 # the following for loop choose selected attack classes and normal labeled data and put them into the setA_train.
 if training_attack_class_list[0][0] != 0 and len(training_attack_class_list[0]) != num_attack_class:
-    # sub-class names belonging to the chosen attack classes
-    wanted = [s for c in training_attack_class_list[0] for s in attacks_subClass[c-1]]
     for i in range(len(X_train)):
-        label = str.lower(str(X_train[i, -2]))
-        # keep chosen attacks and all normal rows, once each
-        if label in wanted or label == 'normal':
+        # exp., X_train[i, -2] is the label of attack subclass, and attacks_subClass[training_attack_class_list[0][j]-1] identify the selected attack class
+        if str.lower(str(X_train[i,-2])) == 'normal':
             setA_train.append(X_train[i])
+        for j in range(len(training_attack_class_list[0])):
+            if str.lower(str(X_train[i, -2])) in attacks_subClass[training_attack_class_list[0][j]-1]:
+                setA_train.append(X_train[i])
     trainingFileName="Training"
     for i in range(len(training_attack_class_list[0])):
         trainingFileName = trainingFileName + "-a" + str(training_attack_class_list[0][i])
@@ -64,8 +62,8 @@ elif len(training_attack_class_list[0]) == num_attack_class:
     print("No changes is needed for training dataset!\n")
 else:
     print("No attack classes are chosen, thus no new training file is created!\n")
-
-print("Creating testing set.....\n")
+        
+print("Creating testing set.....\n")    
 setA_test = []
 # the following for loop choose selected attack classes and normal labeled data and put them into the setA_train.
 if testing_attack_class_list[0][0] != 0 and len(testing_attack_class_list[0]) != num_attack_class:
