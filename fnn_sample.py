@@ -134,7 +134,7 @@ classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = [
 classifierHistory = classifier.fit(X_train, y_train, batch_size = BatchSize, epochs = NumEpoch)
 
 # evaluate the keras model for the provided model and dataset
-loss, accuracy = classifier.evaluate(X_train, y_train)
+loss, accuracy = classifier.evaluate(X_test, y_test)
 print('Print the loss and the accuracy of the model on the dataset')
 print('Loss [0,1]: %.4f' % (loss), 'Accuracy [0,1]: %.4f' % (accuracy))
 
