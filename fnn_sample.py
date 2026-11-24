@@ -188,3 +188,17 @@ plt.xlabel('epoch')
 plt.legend(['train'], loc='upper left')
 plt.savefig('loss_SA.png')
 plt.show()
+
+
+test_names = pd.read_csv(TestingData, header=None).iloc[:, -2].values
+
+classes = {
+    'DoS': ['apache2', 'back', 'land', 'neptune', 'mailbomb', 'pod', 'processtable', 'smurf', 'teardrop', 'udpstorm', 'worm'],
+    'Probe': ['ipsweep', 'mscan', 'nmap', 'portsweep', 'saint', 'satan'],
+    'U2R': ['buffer_overflow', 'loadmodule', 'perl', 'ps', 'rootkit', 'sqlattack', 'xterm'],
+    'R2L': ['ftp_write', 'guess_passwd', 'httptunnel', 'imap', 'multihop', 'named', 'phf', 'sendmail', 'snmpgetattack', 'snmpguess', 'spy', 'warezclient', 'warezmaster', 'xlock', 'xsnoop']
+}
+
+for name, attacks in classes.items():
+    predictions = [y_pred[i][0] for i in range(len(y_pred)) if test_names[i] in attacks]
+    print(name, len(predictions), sum(predictions) / len(predictions) if predictions else 0)
