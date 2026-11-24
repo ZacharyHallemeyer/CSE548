@@ -21,7 +21,7 @@ import numpy as np
 # Type the training dataset file name in ''
 TrainingDataPath=''
 TrainingData='Training-a1-a3.csv'
-TestingData='Testing-a1-a3.csv'
+TestingData='Testing-a2-a4.csv'
 # Batch Size
 BatchSize=10
 # Epohe Size
